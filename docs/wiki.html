@@ -4,204 +4,339 @@
   <meta charset="UTF-8" />
   <title>AntiSlurGuard Wiki</title>
   <style>
-    body { font-family: "Segoe UI", system-ui, sans-serif; background: #0f1117; color: #e5e7eb; margin: 0; }
-    header { background: #1f2330; padding: 1.5rem; text-align: center; border-bottom: 2px solid #2d3348; }
-    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
-    nav { display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem; }
-    button { background: #3b82f6; border: none; border-radius: 999px; color: white; padding: 0.5rem 1.25rem; cursor: pointer; font-weight: 600; }
-    button.secondary { background: #4b5563; }
-    main { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem 3rem; }
-    section { margin-bottom: 2rem; background: #1f2330; border: 1px solid #2d3348; border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.35); }
-    h2 { margin-top: 0; color: #93c5fd; }
-    ul { line-height: 1.6; }
-    a { color: #93c5fd; }
+    :root {
+      --bg: #0d1117;
+      --panel: #161b26;
+      --panel-2: #111521;
+      --border: #1f2635;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --accent-2: #8b5cf6;
+      --success: #34d399;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Inter", "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    header { background: linear-gradient(135deg, rgba(96,165,250,0.15), rgba(139,92,246,0.15)); border-bottom: 1px solid var(--border); padding: 1.75rem 1.25rem; }
+    header .inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
+    h1 { margin: 0; font-size: 1.9rem; letter-spacing: 0.01em; }
+    .lang-switch { display: flex; gap: 0.5rem; }
+    .pill { border: 1px solid var(--border); background: var(--panel); color: var(--text); border-radius: 999px; padding: 0.45rem 0.9rem; cursor: pointer; font-weight: 600; transition: all 0.15s ease; }
+    .pill.active { background: var(--accent); color: #0b1221; border-color: transparent; box-shadow: 0 10px 25px rgba(96,165,250,0.35); }
+    main { max-width: 1200px; margin: 1.5rem auto 3rem; padding: 0 1.25rem; display: grid; grid-template-columns: 280px 1fr; gap: 1.25rem; }
+    .sidebar { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; position: sticky; top: 1rem; height: fit-content; box-shadow: 0 15px 50px rgba(0,0,0,0.25); }
+    .sidebar h3 { margin-top: 0; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .menu { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.3rem; }
+    .menu button { width: 100%; text-align: left; background: transparent; border: 1px solid transparent; color: var(--text); padding: 0.65rem 0.75rem; border-radius: 10px; cursor: pointer; transition: background 0.12s ease, border 0.12s ease; }
+    .menu button:hover { background: var(--panel-2); border-color: var(--border); }
+    .menu button.active { background: rgba(96,165,250,0.12); border-color: var(--accent); color: var(--accent); }
+    .content { display: flex; flex-direction: column; gap: 1rem; }
+    section { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem 1.35rem; box-shadow: 0 12px 40px rgba(0,0,0,0.28); }
+    section h2 { margin-top: 0; color: var(--accent); letter-spacing: 0.02em; }
+    p { line-height: 1.6; color: var(--text); }
+    ul, ol { color: var(--text); line-height: 1.6; padding-left: 1.2rem; }
+    code { background: var(--panel-2); padding: 0.15rem 0.35rem; border-radius: 6px; color: #fcd34d; }
+    pre { background: var(--panel-2); border-radius: 12px; padding: 1rem; overflow: auto; border: 1px solid var(--border); }
+    .tag { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(96,165,250,0.14); color: var(--accent); border: 1px solid rgba(96,165,250,0.35); padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.9rem; }
+    .card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem; }
+    .card h4 { margin: 0 0 0.3rem; color: var(--text); }
+    .card p { margin: 0; color: var(--muted); }
     .lang-section { display: none; }
     .lang-section.active { display: block; }
-    .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-    code { background: #11131a; padding: 0.15rem 0.35rem; border-radius: 6px; color: #fcd34d; }
+    @media (max-width: 1024px) {
+      main { grid-template-columns: 1fr; }
+      .sidebar { position: relative; top: 0; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>AntiSlurGuard Knowledge Hub</h1>
-    <p>Pick a language to learn how to install, configure, and operate the plugin.</p>
-    <nav>
-      <button id="btn-en">English</button>
-      <button id="btn-ru" class="secondary">Русский</button>
-    </nav>
+    <div class="inner">
+      <div>
+        <div class="tag">AntiSlurGuard</div>
+        <h1>Complete Wiki — Moderation without the guesswork</h1>
+        <p>Everything you need to install, configure, and operate the plugin. Switch the language to view the same content in Russian.</p>
+      </div>
+      <div class="lang-switch">
+        <button class="pill active" data-lang="en">English</button>
+        <button class="pill" data-lang="ru">Русский</button>
+      </div>
+    </div>
   </header>
+
   <main>
-    <section id="en" class="lang-section active" lang="en">
-      <h2>Overview</h2>
-      <p>AntiSlurGuard silently moderates nicknames and chat messages against an external list of regex patterns. It normalizes incoming text, enforces anti-spam slowmode, applies configurable punishments, and keeps administrators informed without flooding chat.</p>
+    <aside class="sidebar">
+      <h3>Pages</h3>
+      <ul class="menu" id="menu"></ul>
+    </aside>
 
-      <div class="two-column">
-        <div>
-          <h3>Key Files</h3>
-          <ul>
-            <li><code>plugins/AntiSlurGuard/config.yml</code> – master settings with localized comments.</li>
-            <li><code>banned-patterns.txt</code> – one pattern per line (literal or regex). Empty/# lines ignored.</li>
-            <li><code>exceptions.txt</code> – allow-list entries that must never be blocked.</li>
-            <li><code>messages.yml</code> – editable notification templates (auto-synced with <code>lang</code>).</li>
-            <li><code>admin-notify.yml</code> – per-admin alert toggles.</li>
-            <li><code>player-stats.yml</code> – violation counter with auto-permaban tracking.</li>
-            <li><code>userdata/</code> – full original messages that were blocked, stored per player.</li>
-            <li><code>announcements.yml</code> – rotating broadcasts with optional hover/click metadata.</li>
-            <li><code>lang/en_US.yml</code> &amp; <code>lang/ru_RU.yml</code> – language bundles.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Quick Start</h3>
+    <div class="content">
+      <div id="en" class="lang-section active" lang="en">
+        <section id="en-overview">
+          <h2>Overview</h2>
+          <p>AntiSlurGuard scans player nicknames and chat messages against your regex or literal patterns. It normalizes obfuscated text, blocks or punishes offenders, throttles spam with per-player slowmode, and keeps admins informed via in-game alerts and aggregated console reports.</p>
+          <div class="grid">
+            <div class="card"><h4>Quick facts</h4><p>Paper 1.21.8, Java 21. Supports bilingual comments/templates synced to <code>lang</code>.</p></div>
+            <div class="card"><h4>Storage</h4><p>Patterns, exceptions, stats, and per-user logs live under <code>plugins/AntiSlurGuard/</code>. All paths are configurable.</p></div>
+            <div class="card"><h4>Visibility control</h4><p>Players can be told why messages were blocked; admins get concise alerts and periodic console summaries.</p></div>
+          </div>
+        </section>
+
+        <section id="en-start">
+          <h2>Getting started</h2>
           <ol>
-            <li>Drop the built JAR into <code>plugins/</code> on Paper 1.21.8 (Java 21).</li>
-            <li>Start the server once to generate configs and templates.</li>
-            <li>Fill <code>banned-patterns.txt</code> with literal words or regex. Simple words automatically gain variant detection.</li>
-            <li>Customize punishments, notifications, and slowmode inside <code>config.yml</code>.</li>
+            <li>Drop the built JAR into <code>plugins/</code> and start the server once. All data files are generated with the language you set in <code>config.yml</code>.</li>
+            <li>Fill <code>banned-patterns.txt</code> with regex or simple words (one per line). Empty lines and lines starting with <code>#</code> are ignored.</li>
+            <li>Optionally add safe phrases to <code>exceptions.txt</code> so they always bypass the filter.</li>
+            <li>Adjust punishments, notifications, slowmode, and paths in <code>config.yml</code>. Run <code>/asg reload</code> to apply changes.</li>
+            <li>Test a phrase with <code>/asg test &lt;text&gt;</code> to see normalization and the matching pattern.</li>
           </ol>
-        </div>
+        </section>
+
+        <section id="en-config">
+          <h2>Configuration reference</h2>
+          <div class="grid">
+            <div class="card"><h4>Language & paths</h4><p><code>lang</code> accepts <code>en_US</code> or <code>ru_RU</code>; comments in <code>config.yml</code> and <code>messages.yml</code> follow. Use <code>paths</code> to relocate any data file or folder (patterns, exceptions, messages, admin-notify, stats, userdata, runtime overrides, announcements, language packs).</p></div>
+            <div class="card"><h4>Pattern options</h4><p><code>patterns.autoVariants</code> generates variants for literal words so leetspeak and spacing tricks are still caught.</p></div>
+            <div class="card"><h4>Normalization pipeline</h4><p>Enable <code>normalize.enabled</code> to apply case-folding, diacritic stripping, leet mapping, Cyrillic transliteration, symbol removal, and repeated-character collapse before regex checks.</p></div>
+            <div class="card"><h4>Notifications</h4><p><code>notifications.player</code> controls the message sent to offenders; <code>notifications.admin</code> controls in-game admin alerts for chat violations.</p></div>
+            <div class="card"><h4>Anti-spam</h4><p><code>antiSpam</code> tracks repeated messages within <code>repeatWindowSeconds</code>; exceeding <code>repeatThreshold</code> triggers per-player slowmode for <code>slowmodeDurationSeconds</code> with a cooldown between attempts.</p></div>
+            <div class="card"><h4>Punishments</h4><p>Separate actions for <code>nickname</code> and <code>chat</code>: <code>NONE</code>, <code>DISALLOW</code>, <code>KICK</code>, <code>BAN</code>, <code>TEMPBAN</code>, <code>MUTE</code>, or <code>COMMAND</code>. Placeholders: <code>{player}</code>, <code>{match}</code>, <code>{type}</code>, <code>{reason}</code>, <code>{durationSeconds}</code>.</p></div>
+            <div class="card"><h4>Stats & autoban</h4><p><code>stats.trackChatViolations</code> stores counts in <code>player-stats.yml</code>. After <code>autoPermaBanThreshold</code> chat violations the player is permanently banned with message <code>auto-permaban-reason</code>.</p></div>
+            <div class="card"><h4>EssentialsX integration</h4><p>When <code>essentials.enabled</code> is true, punishment commands use the provided templates for kick/ban/tempban/mute.</p></div>
+            <div class="card"><h4>Announcements</h4><p><code>announcements.enabled</code> and <code>defaultIntervalSeconds</code> configure broadcast scheduling. Entries live in <code>announcements.yml</code>.</p></div>
+            <div class="card"><h4>Management helpers</h4><p><code>management.unmuteCommand</code> and <code>management.unbanCommand</code> are run for <code>/asg unmute</code> and <code>/asg unban</code>.</p></div>
+            <div class="card"><h4>Runtime overrides</h4><p><code>runtime-settings.yml</code> can override punishment durations at runtime via <code>durations.chatSeconds</code> and <code>durations.nicknameSeconds</code> (use <code>-1</code> to fall back to config values).</p></div>
+            <div class="card"><h4>Console aggregation</h4><p>Set <code>console.aggregateIntervalSeconds</code> and <code>massAlertThreshold</code> to control how often the plugin prints batched name/chat block counts.</p></div>
+          </div>
+        </section>
+
+        <section id="en-commands">
+          <h2>Commands</h2>
+          <p>All commands require <code>antislurguard.admin</code> unless stated otherwise.</p>
+          <ul>
+            <li><code>/asg help</code> — list every subcommand with descriptions.</li>
+            <li><code>/asg reload</code> — reload config, messages, patterns, exceptions, runtime overrides, and announcements.</li>
+            <li><code>/asg stats [player]</code> — without args prints current aggregated blocks; with a name or UUID shows personal violation/permanent ban counts.</li>
+            <li><code>/asg test &lt;text&gt;</code> — show normalization output, whether a pattern matches, and which pattern/origin triggered.</li>
+            <li><code>/asg add &lt;pattern&gt;</code> / <code>/asg remove &lt;pattern&gt;</code> — live-edit <code>banned-patterns.txt</code>.</li>
+            <li><code>/asg except add|remove &lt;text&gt;</code> — manage <code>exceptions.txt</code> entries that always bypass filtering.</li>
+            <li><code>/asg notify &lt;player|me&gt; &lt;on|off|toggle&gt;</code> — change admin alert preferences stored in <code>admin-notify.yml</code>.</li>
+            <li><code>/asg logs &lt;player&gt;</code> — show stored violation history with full blocked messages from <code>userdata/&lt;player&gt;.log</code>.</li>
+            <li><code>/asg unmute &lt;player&gt;</code> / <code>/asg unban &lt;player&gt;</code> — run configured management templates (defaults target EssentialsX).</li>
+            <li><code>/asg slowmode &lt;player&gt; clear</code> — remove the per-player slowmode state created by the anti-spam module.</li>
+          </ul>
+        </section>
+
+        <section id="en-data">
+          <h2>Data files</h2>
+          <div class="grid">
+            <div class="card"><h4><code>banned-patterns.txt</code></h4><p>Main list of regex or literal words. Literal words receive automatic variants when enabled.</p></div>
+            <div class="card"><h4><code>exceptions.txt</code></h4><p>Allow-list that must never be blocked; checked before patterns.</p></div>
+            <div class="card"><h4><code>messages.yml</code></h4><p>Editable messages; resynced to the active <code>lang</code> on reload.</p></div>
+            <div class="card"><h4><code>admin-notify.yml</code></h4><p>Per-admin alert preferences controlled by <code>/asg notify</code>.</p></div>
+            <div class="card"><h4><code>player-stats.yml</code></h4><p>Chat violation counters and permanent ban tally per user.</p></div>
+            <div class="card"><h4><code>userdata/</code></h4><p>Per-player archives of blocked chat messages with timestamps.</p></div>
+            <div class="card"><h4><code>runtime-settings.yml</code></h4><p>Optional punishment duration overrides; supports <code>durations.chatSeconds</code> and <code>durations.nicknameSeconds</code>.</p></div>
+            <div class="card"><h4><code>announcements.yml</code></h4><p>Rotating broadcast entries with text, intervalSeconds, optional hover, clickUrl, and permission.</p></div>
+            <div class="card"><h4><code>lang/en_US.yml</code> & <code>lang/ru_RU.yml</code></h4><p>Language bundles used to sync comments and messages.</p></div>
+          </div>
+        </section>
+
+        <section id="en-flow">
+          <h2>How filtering works</h2>
+          <ol>
+            <li><strong>Normalization</strong> (optional): apply transformations defined in <code>normalize</code> before any lookups.</li>
+            <li><strong>Exceptions check</strong>: if <code>exceptions.txt</code> matches normalized or raw text, the message is allowed.</li>
+            <li><strong>Pattern match</strong>: search normalized text against regex/pattern store. Literal entries respect auto-variants.</li>
+            <li><strong>Punishment & logging</strong>: execute configured action, log to <code>player-stats.yml</code> and <code>userdata/</code>, and broadcast admin/player notifications.</li>
+            <li><strong>Aggregation</strong>: counters accumulate and are printed to console every <code>aggregateIntervalSeconds</code> if above <code>massAlertThreshold</code>.</li>
+          </ol>
+        </section>
+
+        <section id="en-announcements">
+          <h2>Announcements</h2>
+          <p>Create repeating broadcasts in <code>announcements.yml</code>. Missing <code>intervalSeconds</code> values use <code>announcements.defaultIntervalSeconds</code>. Optional <code>hover</code>, <code>clickUrl</code>, and <code>permission</code> fields tailor interactivity and audience.</p>
+          <pre><code>announcements:
+  - text: "&aNeed Java 21? &bClick here"
+    intervalSeconds: 300
+    hover: "Download the latest JDK"
+    clickUrl: "https://adoptium.net"
+    permission: ""</code></pre>
+        </section>
+
+        <section id="en-tips">
+          <h2>Troubleshooting & tips</h2>
+          <ul>
+            <li>If the console mentions safe mode or zero patterns, populate <code>banned-patterns.txt</code> and run <code>/asg reload</code>.</li>
+            <li>For streamers or quiet moderation, disable alerts per admin with <code>/asg notify &lt;name&gt; off</code>.</li>
+            <li>Need longer/shorter punishments temporarily? Edit <code>runtime-settings.yml</code> (use <code>-1</code> to revert) and reload.</li>
+            <li>Use <code>/asg test</code> to confirm that normalization catches obfuscated messages before rolling changes to production.</li>
+            <li>Anti-spam slowmode can be cleared with <code>/asg slowmode &lt;player&gt; clear</code> if a false positive happens.</li>
+          </ul>
+        </section>
       </div>
 
-      <h2>Configuration Guide</h2>
-      <ul>
-        <li><strong>lang</strong>: switch between <code>en_US</code> and <code>ru_RU</code>. The plugin rewrites <code>config.yml</code> comments and <code>messages.yml</code> to match.</li>
-        <li><strong>paths</strong>: move any data file; the plugin will follow the new paths (patterns, exceptions, messages, admin notify, player stats, per-user archives, runtime overrides, announcements, languages) and recreate files when missing.</li>
-        <li><strong>patterns.autoVariants</strong>: when <code>true</code>, literal entries are normalized so dozens of obfuscated versions are still caught.</li>
-        <li><strong>normalize</strong>: enable/disable steps such as Unicode case-folding, diacritic stripping, leet substitutions, Cyrillic transliteration, symbol removal, and repeat collapsing. Disabled by default.</li>
-        <li><strong>notifications</strong>: toggle player DM feedback and the admin alert message used for chat violations.</li>
-        <li><strong>antiSpam</strong>: define how many repeated messages within <code>repeatWindowSeconds</code> trigger slowmode, how long it lasts, and what cooldown applies between attempts.</li>
-        <li><strong>punishments</strong>: choose <code>DISALLOW</code>, <code>KICK</code>, <code>BAN</code>, <code>TEMPBAN</code>, <code>COMMAND</code>, or <code>NONE</code> per context. Commands can use placeholders such as <code>{player}</code>, <code>{match}</code>, <code>{type}</code>, <code>{reason}</code>, and <code>{durationSeconds}</code>.</li>
-        <li><strong>stats</strong>: log chat violations to <code>player-stats.yml</code> and automatically perma-ban after the configured threshold.</li>
-        <li><strong>essentials</strong>: point to EssentialsX commands if you prefer its moderation suite.</li>
-        <li><strong>announcements</strong>: enable the scheduler and set the default interval. Edit <code>announcements.yml</code> to add hover text, clickable links, and permissions per broadcast.</li>
-        <li><strong>management</strong>: template console commands executed by <code>/asg unmute</code> and <code>/asg unban</code>.</li>
-      </ul>
+      <div id="ru" class="lang-section" lang="ru">
+        <section id="ru-overview">
+          <h2>Обзор</h2>
+          <p>AntiSlurGuard проверяет ники и чат по вашим regex или буквальным словам, нормализует обфускации, блокирует или наказывает нарушителей, включает персональный слоумод против спама и информирует админов через алерты и агрегированные отчёты в консоли.</p>
+          <div class="grid">
+            <div class="card"><h4>Быстрые факты</h4><p>Paper 1.21.8, Java 21. Комментарии и шаблоны двуязычные и зависят от <code>lang</code>.</p></div>
+            <div class="card"><h4>Хранилище</h4><p>Паттерны, исключения, статистика и логи хранятся в <code>plugins/AntiSlurGuard/</code>; все пути настраиваются.</p></div>
+            <div class="card"><h4>Контроль видимости</h4><p>Игроки могут получать причину блокировки; админы — краткие уведомления и периодические сводки в консоль.</p></div>
+          </div>
+        </section>
 
-      <h2>Commands</h2>
-      <p><code>/asg &lt;help|reload|stats [player]|test &lt;text&gt;|add &lt;pattern&gt;|remove &lt;pattern&gt;|except &lt;add|remove&gt; &lt;text&gt;|notify &lt;player|me&gt; &lt;on|off|toggle&gt;|logs &lt;player&gt;|unmute &lt;player&gt;|unban &lt;player&gt;|slowmode &lt;player&gt; clear&gt;</code></p>
-      <ul>
-        <li><strong>help</strong>: prints all subcommands with descriptions (also shown in TAB hints).</li>
-        <li><strong>reload</strong>: re-read config, messages, and pattern files.</li>
-        <li><strong>stats</strong>: without args, prints aggregated blocks; with a player name/UUID, shows personal history.</li>
-        <li><strong>test</strong>: preview normalization, see which pattern triggers, and inspect the exact matched fragment.</li>
-        <li><strong>add/remove</strong>: modify <code>banned-patterns.txt</code> live.</li>
-        <li><strong>except add/remove</strong>: register allow-list entries that always bypass the filter.</li>
-        <li><strong>notify</strong>: toggle admin alerts for yourself or another operator (handy for streamers).</li>
-        <li><strong>logs</strong>: print full blocked messages from <code>userdata/&lt;player&gt;.log</code> with timestamps.</li>
-        <li><strong>unmute/unban</strong>: run the configured management commands.</li>
-        <li><strong>slowmode &lt;player&gt; clear</strong>: lift the personal slowmode set by the anti-spam module.</li>
-      </ul>
-
-      <h2>Announcements</h2>
-      <p>Each entry in <code>announcements.yml</code> looks like:</p>
-      <pre><code>- text: "&aNeed Java 21? &bClick here"
-  intervalSeconds: 300
-  hover: "Download the latest JDK"
-  clickUrl: "https://adoptium.net"
-  permission: ""
-</code></pre>
-      <p>Missing values fall back to <code>announcements.defaultIntervalSeconds</code>. Hover and click fields are optional.</p>
-
-      <h2>Troubleshooting</h2>
-      <ul>
-        <li>If the console prints “safe mode” on boot, <code>banned-patterns.txt</code> is empty. Add at least one pattern.</li>
-        <li>Admins spammed with alerts? Use <code>/asg notify me off</code> or edit <code>admin-notify.yml</code>.</li>
-        <li>Need bilingual comments again? Change <code>lang</code> in <code>config.yml</code> and run <code>/asg reload</code>.</li>
-      </ul>
-    </section>
-
-    <section id="ru" class="lang-section" lang="ru">
-      <h2>Обзор</h2>
-      <p>AntiSlurGuard незаметно проверяет никнеймы и чат по внешнему списку regex, нормализует текст, включает анти-спам slowmode и применяет наказания без спама в чате. Админы получают агрегированные отчёты и могут управлять нарушителями командами.</p>
-
-      <div class="two-column">
-        <div>
-          <h3>Основные файлы</h3>
-          <ul>
-            <li><code>plugins/AntiSlurGuard/config.yml</code> — главные настройки с локализованными комментариями.</li>
-            <li><code>banned-patterns.txt</code> — один паттерн на строку, пустые и <code>#</code>-строки пропускаются.</li>
-            <li><code>messages.yml</code> — редактируемые сообщения (авто-синхронизация с выбранным языком).</li>
-            <li><code>admin-notify.yml</code> — индивидуальные настройки уведомлений админов.</li>
-            <li><code>player-stats.yml</code> — счётчик нарушений для автопермабана.</li>
-            <li><code>exceptions.txt</code> — список исключений, которые всегда обходят фильтр.</li>
-            <li><code>userdata/</code> — полные тексты заблокированных сообщений по каждому игроку.</li>
-            <li><code>announcements.yml</code> — расписание автоматических рассылок.</li>
-            <li><code>lang/en_US.yml</code> и <code>lang/ru_RU.yml</code> — шаблоны локализаций.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Быстрый старт</h3>
+        <section id="ru-start">
+          <h2>Быстрый старт</h2>
           <ol>
-            <li>Скопируйте JAR в <code>plugins/</code> Paper 1.21.8 и запустите сервер.</li>
-            <li>Заполните <code>banned-patterns.txt</code> словами или regex — фильтр автоматически учтёт множество вариаций.</li>
-            <li>Отредактируйте <code>config.yml</code>, включая наказания, slowmode и оповещения.</li>
-            <li>Перезагрузите плагин командой <code>/asg reload</code> после правок.</li>
+            <li>Поместите JAR в <code>plugins/</code> и запустите сервер. Все файлы создадутся с языком из <code>config.yml</code>.</li>
+            <li>Заполните <code>banned-patterns.txt</code> regex или словами (одна строка — один пункт). Пустые строки и строки с <code>#</code> игнорируются.</li>
+            <li>При необходимости добавьте безопасные фразы в <code>exceptions.txt</code>, чтобы они всегда проходили проверку.</li>
+            <li>Настройте наказания, уведомления, слоумод и пути в <code>config.yml</code>. Примените правки командой <code>/asg reload</code>.</li>
+            <li>Проверьте фразу через <code>/asg test &lt;text&gt;</code>, чтобы увидеть нормализацию и сработавший паттерн.</li>
           </ol>
-        </div>
+        </section>
+
+        <section id="ru-config">
+          <h2>Справочник настроек</h2>
+          <div class="grid">
+            <div class="card"><h4>Язык и пути</h4><p><code>lang</code> принимает <code>en_US</code> или <code>ru_RU</code>; комментарии <code>config.yml</code> и <code>messages.yml</code> подстраиваются автоматически. Блок <code>paths</code> позволяет перенести любые файлы (паттерны, исключения, сообщения, admin-notify, статистику, userdata, runtime overrides, рассылки, языковые пакеты).</p></div>
+            <div class="card"><h4>Паттерны</h4><p><code>patterns.autoVariants</code> генерирует варианты для простых слов, чтобы ловить leetspeak и разделители.</p></div>
+            <div class="card"><h4>Нормализация</h4><p>Включите <code>normalize.enabled</code>, чтобы перед проверкой применялись приведение регистра, удаление диакритики, leet-карта, транслитерация кириллицы, очистка символов и схлопывание повторов.</p></div>
+            <div class="card"><h4>Уведомления</h4><p><code>notifications.player</code> управляет текстом для нарушителя; <code>notifications.admin</code> — алертами для админов при блокировке чата.</p></div>
+            <div class="card"><h4>Анти-спам</h4><p><code>antiSpam</code> отслеживает повторы в окне <code>repeatWindowSeconds</code>; превышение <code>repeatThreshold</code> включает персональный слоумод на <code>slowmodeDurationSeconds</code> с задержкой между сообщениями.</p></div>
+            <div class="card"><h4>Наказания</h4><p>Отдельно для <code>nickname</code> и <code>chat</code>: <code>NONE</code>, <code>DISALLOW</code>, <code>KICK</code>, <code>BAN</code>, <code>TEMPBAN</code>, <code>MUTE</code>, <code>COMMAND</code>. Плейсхолдеры: <code>{player}</code>, <code>{match}</code>, <code>{type}</code>, <code>{reason}</code>, <code>{durationSeconds}</code>.</p></div>
+            <div class="card"><h4>Статистика и автобан</h4><p><code>stats.trackChatViolations</code> пишет данные в <code>player-stats.yml</code>. После <code>autoPermaBanThreshold</code> нарушений чат игрок пермабанится с сообщением <code>auto-permaban-reason</code>.</p></div>
+            <div class="card"><h4>EssentialsX</h4><p>При <code>essentials.enabled=true</code> плагин использует заданные команды kick/ban/tempban/mute из шаблонов.</p></div>
+            <div class="card"><h4>Рассылки</h4><p><code>announcements.enabled</code> и <code>defaultIntervalSeconds</code> управляют расписанием сообщений из <code>announcements.yml</code>.</p></div>
+            <div class="card"><h4>Хелперы управления</h4><p><code>management.unmuteCommand</code> и <code>management.unbanCommand</code> выполняются командами <code>/asg unmute</code> и <code>/asg unban</code>.</p></div>
+            <div class="card"><h4>Runtime overrides</h4><p><code>runtime-settings.yml</code> может переопределять длительность наказаний через <code>durations.chatSeconds</code> и <code>durations.nicknameSeconds</code> (<code>-1</code> — вернуть значения из конфига).</p></div>
+            <div class="card"><h4>Агрегация в консоль</h4><p>Настройте <code>console.aggregateIntervalSeconds</code> и <code>massAlertThreshold</code>, чтобы задавать частоту и порог суммарных отчётов.</p></div>
+          </div>
+        </section>
+
+        <section id="ru-commands">
+          <h2>Команды</h2>
+          <p>Все команды требуют права <code>antislurguard.admin</code>, если не указано иное.</p>
+          <ul>
+            <li><code>/asg help</code> — список подкоманд с описаниями.</li>
+            <li><code>/asg reload</code> — перезагрузить конфиг, сообщения, паттерны, исключения, runtime overrides и рассылки.</li>
+            <li><code>/asg stats [player]</code> — без аргументов показывает текущие блокировки; с именем или UUID выводит личные нарушения и пермабаны.</li>
+            <li><code>/asg test &lt;text&gt;</code> — показать результат нормализации, факт совпадения и паттерн/источник.</li>
+            <li><code>/asg add &lt;pattern&gt;</code> / <code>/asg remove &lt;pattern&gt;</code> — редактирование <code>banned-patterns.txt</code> без рестарта.</li>
+            <li><code>/asg except add|remove &lt;text&gt;</code> — управление исключениями в <code>exceptions.txt</code>.</li>
+            <li><code>/asg notify &lt;player|me&gt; &lt;on|off|toggle&gt;</code> — изменить личные настройки алертов в <code>admin-notify.yml</code>.</li>
+            <li><code>/asg logs &lt;player&gt;</code> — показать историю нарушений с полными заблокированными сообщениями из <code>userdata/&lt;player&gt;.log</code>.</li>
+            <li><code>/asg unmute &lt;player&gt;</code> / <code>/asg unban &lt;player&gt;</code> — выполнить шаблоны управления (по умолчанию через EssentialsX).</li>
+            <li><code>/asg slowmode &lt;player&gt; clear</code> — снять персональный слоумод анти-спама.</li>
+          </ul>
+        </section>
+
+        <section id="ru-data">
+          <h2>Файлы данных</h2>
+          <div class="grid">
+            <div class="card"><h4><code>banned-patterns.txt</code></h4><p>Основной список regex или слов. Для слов включаются авто-варианты.</p></div>
+            <div class="card"><h4><code>exceptions.txt</code></h4><p>Белый список, проверяется до паттернов.</p></div>
+            <div class="card"><h4><code>messages.yml</code></h4><p>Редактируемые сообщения, синхронизируются с активным <code>lang</code>.</p></div>
+            <div class="card"><h4><code>admin-notify.yml</code></h4><p>Настройки алертов админов, изменяются через <code>/asg notify</code>.</p></div>
+            <div class="card"><h4><code>player-stats.yml</code></h4><p>Счётчики нарушений чата и пермабанов.</p></div>
+            <div class="card"><h4><code>userdata/</code></h4><p>Логи заблокированных сообщений по игрокам с таймстампами.</p></div>
+            <div class="card"><h4><code>runtime-settings.yml</code></h4><p>Переопределения длительности наказаний: <code>durations.chatSeconds</code>, <code>durations.nicknameSeconds</code>.</p></div>
+            <div class="card"><h4><code>announcements.yml</code></h4><p>Записи рассылок: текст, intervalSeconds, опциональные hover, clickUrl и permission.</p></div>
+            <div class="card"><h4><code>lang/en_US.yml</code> и <code>lang/ru_RU.yml</code></h4><p>Языковые пакеты для синхронизации комментариев и сообщений.</p></div>
+          </div>
+        </section>
+
+        <section id="ru-flow">
+          <h2>Как работает фильтр</h2>
+          <ol>
+            <li><strong>Нормализация</strong> (опционально): применяются этапы из блока <code>normalize</code> до проверок.</li>
+            <li><strong>Исключения</strong>: если совпало с <code>exceptions.txt</code> (нормализованным или исходным), сообщение пропускается.</li>
+            <li><strong>Паттерны</strong>: поиск по нормализованному тексту среди regex/слов с учётом авто-вариантов.</li>
+            <li><strong>Наказание и логирование</strong>: выполняется действие, запись в <code>player-stats.yml</code> и <code>userdata/</code>, отправляются уведомления игроку и админам.</li>
+            <li><strong>Агрегация</strong>: счётчики выводятся в консоль каждые <code>aggregateIntervalSeconds</code>, если превышен <code>massAlertThreshold</code>.</li>
+          </ol>
+        </section>
+
+        <section id="ru-announcements">
+          <h2>Рассылки</h2>
+          <p>Добавляйте повторяющиеся сообщения в <code>announcements.yml</code>. Если <code>intervalSeconds</code> не задан, используется <code>announcements.defaultIntervalSeconds</code>. Поля <code>hover</code>, <code>clickUrl</code> и <code>permission</code> необязательны.</p>
+          <pre><code>announcements:
+  - text: "&aНужна Java 21? &bЖми сюда"
+    intervalSeconds: 240
+    hover: "Скачать последнюю версию JDK"
+    clickUrl: "https://adoptium.net"
+    permission: ""</code></pre>
+        </section>
+
+        <section id="ru-tips">
+          <h2>Советы и разбор проблем</h2>
+          <ul>
+            <li>Если в консоли сообщения о safe mode или пустых паттернах — заполните <code>banned-patterns.txt</code> и выполните <code>/asg reload</code>.</li>
+            <li>Для стримеров отключайте алерты: <code>/asg notify &lt;ник&gt; off</code>.</li>
+            <li>Нужно временно изменить длительность наказаний? Отредактируйте <code>runtime-settings.yml</code> (<code>-1</code> — вернуть значения конфига) и перезагрузите.</li>
+            <li>Перед выкладкой проверяйте сложные кейсы через <code>/asg test</code>, чтобы убедиться, что нормализация ловит обфускации.</li>
+            <li>Если слоумод сработал ошибочно, снимите его командой <code>/asg slowmode &lt;player&gt; clear</code>.</li>
+          </ul>
+        </section>
       </div>
-
-      <h2>Настройка</h2>
-      <ul>
-        <li><strong>lang</strong>: переключает язык комментариев и сообщений (английский по умолчанию).</li>
-        <li><strong>paths</strong>: можно перенести любой файл (паттерны, исключения, сообщения, admin-notify, статистику, userdata, runtime-overrides, рассылки, языки) — плагин создаст его в новом месте.</li>
-        <li><strong>patterns.autoVariants</strong>: включает генерацию десятков вариантов для простых слов.</li>
-        <li><strong>normalize</strong>: задаёт этапы обработки (регистры, диакритика, leet, кириллица→латиница, символы, повторы). По умолчанию выключено.</li>
-        <li><strong>notifications</strong>: включает ЛС нарушителю и текст, который увидят админы при блокировке сообщения.</li>
-        <li><strong>antiSpam</strong>: параметры поиска повторов и длительность персонального slowmode.</li>
-        <li><strong>punishments</strong>: действия <code>DISALLOW</code>/<code>KICK</code>/<code>BAN</code>/<code>TEMPBAN</code>/<code>COMMAND</code>/<code>NONE</code> с плейсхолдерами команд.</li>
-        <li><strong>stats</strong>: ведёт журнал и автоматически выдаёт пермабан после <code>autoPermaBanThreshold</code> нарушений.</li>
-        <li><strong>essentials</strong>: команды EssentialsX, если нужно использовать его систему наказаний.</li>
-        <li><strong>announcements</strong>: глобальные настройки рассылок (включение и интервал по умолчанию).</li>
-        <li><strong>management</strong>: команды, которые запускаются при <code>/asg unmute</code> и <code>/asg unban</code>.</li>
-      </ul>
-
-      <h2>Команды</h2>
-      <p><code>/asg &lt;help|reload|stats [player]|test &lt;text&gt;|add &lt;pattern&gt;|remove &lt;pattern&gt;|except &lt;add|remove&gt; &lt;text&gt;|notify &lt;player|me&gt; &lt;on|off|toggle&gt;|logs &lt;player&gt;|unmute &lt;player&gt;|unban &lt;player&gt;|slowmode &lt;player&gt; clear&gt;</code></p>
-      <ul>
-        <li><strong>help</strong> — выводит все подкоманды с описанием (подсказки TAB тоже показывают список).</li>
-        <li><strong>reload</strong> — перечитать конфиг/сообщения/паттерны.</li>
-        <li><strong>stats</strong> — показать глобальные счётчики или данные по конкретному игроку.</li>
-        <li><strong>test</strong> — проверить, как строка нормализуется, какой паттерн срабатывает и что именно совпало.</li>
-        <li><strong>add/remove</strong> — редактировать список бан-слов без рестарта.</li>
-        <li><strong>except add/remove</strong> — добавить/удалить исключение, которое всегда пропускается.</li>
-        <li><strong>notify</strong> — включить/выключить уведомления себе или другому админу.</li>
-        <li><strong>logs</strong> — вывести полные запрещённые сообщения из <code>userdata/&lt;ник&gt;.log</code> с временем отправки.</li>
-        <li><strong>unmute/unban</strong> — запустить подготовленные консольные команды (по умолчанию через EssentialsX).</li>
-        <li><strong>slowmode clear</strong> — снять персональный slowmode с игрока.</li>
-      </ul>
-
-      <h2>Рассылки</h2>
-      <p>Пример записи в <code>announcements.yml</code>:</p>
-      <pre><code>- text: "&aНужна Java 21? &bЖми сюда"
-  intervalSeconds: 240
-  hover: "Скачать последнюю версию JDK"
-  clickUrl: "https://adoptium.net"
-  permission: ""
-</code></pre>
-      <p>Если поле <code>intervalSeconds</code> не указано, используется значение из <code>announcements.defaultIntervalSeconds</code>.</p>
-
-      <h2>Советы</h2>
-      <ul>
-        <li>Сообщения плагина редактируются в <code>messages.yml</code>; для смены языка достаточно обновить <code>lang</code> и выполнить <code>/asg reload</code>.</li>
-        <li>Если в консоли появляются только массовые отчёты — значит, лимит <code>console.massAlertThreshold</code> выше текущих блокировок.</li>
-        <li>Для стримеров можно навсегда отключить уведомления, выполнив <code>/asg notify &lt;ник&gt; off</code>.</li>
-      </ul>
-    </section>
+    </div>
   </main>
+
   <script>
-    const enBtn = document.getElementById('btn-en');
-    const ruBtn = document.getElementById('btn-ru');
-    const sections = {
+    const menus = [
+      { id: 'overview', label: { en: 'Overview', ru: 'Обзор' } },
+      { id: 'start', label: { en: 'Getting started', ru: 'Быстрый старт' } },
+      { id: 'config', label: { en: 'Configuration', ru: 'Настройки' } },
+      { id: 'commands', label: { en: 'Commands', ru: 'Команды' } },
+      { id: 'data', label: { en: 'Data files', ru: 'Файлы данных' } },
+      { id: 'flow', label: { en: 'Filtering flow', ru: 'Логика фильтра' } },
+      { id: 'announcements', label: { en: 'Announcements', ru: 'Рассылки' } },
+      { id: 'tips', label: { en: 'Troubleshooting', ru: 'Советы' } },
+    ];
+
+    const menuEl = document.getElementById('menu');
+    const langSections = {
       en: document.getElementById('en'),
-      ru: document.getElementById('ru')
+      ru: document.getElementById('ru'),
     };
-    function setLang(lang) {
-      Object.values(sections).forEach(sec => sec.classList.remove('active'));
-      sections[lang].classList.add('active');
-      enBtn.classList.toggle('secondary', lang !== 'en');
-      ruBtn.classList.toggle('secondary', lang !== 'ru');
+    const langButtons = Array.from(document.querySelectorAll('.pill'));
+
+    function renderMenu(lang) {
+      menuEl.innerHTML = '';
+      menus.forEach((item, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = item.label[lang];
+        btn.dataset.target = `${lang}-${item.id}`;
+        if (idx === 0) btn.classList.add('active');
+        btn.addEventListener('click', () => scrollToSection(btn, lang));
+        menuEl.appendChild(btn);
+      });
     }
-    enBtn.addEventListener('click', () => setLang('en'));
-    ruBtn.addEventListener('click', () => setLang('ru'));
+
+    function scrollToSection(btn, lang) {
+      document.querySelectorAll('.menu button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById(btn.dataset.target);
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 12;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+
+    function setLanguage(lang) {
+      Object.values(langSections).forEach(sec => sec.classList.remove('active'));
+      langSections[lang].classList.add('active');
+      langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      renderMenu(lang);
+    }
+
+    langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+    renderMenu('en');
   </script>
 </body>
 </html>
