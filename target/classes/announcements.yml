@@ -1,0 +1,8 @@
+# Default announcement file. Each entry supports legacy color codes (&), optional hover text and click URLs.
+announcements:
+  - text: "&aStay safe! Visit our &bwebsite &afor rules."
+    hover: "&7Click to open the rules"
+    clickUrl: "https://example.org/rules"
+    intervalSeconds: 300
+  - text: "&dJoin our Discord &fdiscord.gg/example"
+    intervalSeconds: 420

@@ -1,0 +1,18 @@
+name: AntiSlurGuard
+main: com.example.antislurguard.AntiSlurGuardPlugin
+version: 1.1.1
+api-version: "1.21"
+author: "Biggiko"
+softdepend: [Essentials, EssentialsChat]
+commands:
+  asg:
+    description: AntiSlurGuard admin
+    usage: /asg <help|reload|stats [player]|test <text>|add <pattern>|remove <pattern>|except <add|remove> <pattern>|notify <player|me> <on|off|toggle>|logs <player>|unmute <player>|unban <player>|slowmode <player> clear>
+    permission: antislurguard.admin
+permissions:
+  antislurguard.bypass:
+    description: Bypass AntiSlurGuard checks
+    default: op
+  antislurguard.admin:
+    description: Admin for AntiSlurGuard
+    default: op

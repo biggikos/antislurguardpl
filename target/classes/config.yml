@@ -1,0 +1,114 @@
+# === AntiSlurGuard ===
+lang: "en_US"
+
+# Paths to all editable files.
+paths:
+  # File with banned patterns (regex or literal per line).
+  patternsFile: "plugins/AntiSlurGuard/banned-patterns.txt"
+  # File with allow-listed exceptions that must NOT be blocked.
+  exceptionsFile: "plugins/AntiSlurGuard/exceptions.txt"
+  # Editable messages file (copied from current language).
+  messagesFile: "plugins/AntiSlurGuard/messages.yml"
+  # Per-admin notification preferences.
+  adminNotifyFile: "plugins/AntiSlurGuard/admin-notify.yml"
+  # Player violation statistics file.
+  playerStatsFile: "plugins/AntiSlurGuard/player-stats.yml"
+  # Per-user violation archive with full original messages.
+  userDataDir: "plugins/AntiSlurGuard/userdata"
+  # Optional overrides for punishment durations.
+  runtimeSettingsFile: "plugins/AntiSlurGuard/runtime-settings.yml"
+  # Rotating announcement list.
+  announcementsFile: "plugins/AntiSlurGuard/announcements.yml"
+  # Folder with language templates.
+  languagesDir: "plugins/AntiSlurGuard/lang"
+
+# Pattern options.
+patterns:
+  # Generate automatic variants for simple words.
+  autoVariants: true
+
+# Text normalization pipeline before regex checks (disabled by default; enable if you need aggressive matching).
+normalize:
+  # Order: caseFold -> strip diacritics -> leet map -> Cyrillic transliteration -> strip non-alnum -> collapse repeats.
+  # Example: "Päätt!!!" -> "paatt" once enabled.
+  enabled: false
+  caseFold: true
+  nfdStripDiacritics: true
+  leetMappings: true
+  stripNonAlnum: true
+  collapseRepeats: true
+  transliterateCyrillic: true
+
+# Permission nodes for bypass/admin tools.
+permissions:
+  bypass: "antislurguard.bypass"
+  admin: "antislurguard.admin"
+
+# Console aggregation interval and spam threshold.
+console:
+  # Seconds between aggregated reports.
+  aggregateIntervalSeconds: 60
+  # Minimum blocks within interval to log.
+  massAlertThreshold: 10
+
+# Player/admin notification toggles.
+notifications:
+  player:
+    enabled: false
+    messageKey: "player-chat-block"
+  admin:
+    enabled: true
+    chatMessageKey: "admin-chat-alert"
+
+# Slowmode anti-spam configuration.
+antiSpam:
+  enabled: true
+  repeatWindowSeconds: 15
+  repeatThreshold: 2
+  slowmodeDurationSeconds: 60
+  slowmodeCooldownSeconds: 10
+  messages:
+    playerTriggeredKey: "player-slowmode-start"
+    playerCooldownKey: "player-slowmode-wait"
+    adminTriggeredKey: "admin-slowmode-alert"
+
+# Actions for nickname/chat violations.
+# Placeholders: {player}, {match}, {type}, {reason}, {durationSeconds}
+# Actions: NONE|DISALLOW|KICK|BAN|TEMPBAN|MUTE|COMMAND
+punishments:
+  nickname:
+    action: "DISALLOW"
+    durationSeconds: 0
+    reason: " "
+    command: ""
+  chat:
+    action: "NONE"
+    durationSeconds: 0
+    reason: " "
+    command: ""
+
+# Persistent stats and auto-ban rules.
+stats:
+  trackChatViolations: true
+  autoPermaBanThreshold: 5
+  autoPermaBanReasonKey: "auto-permaban-reason"
+
+# EssentialsX command templates (optional).
+essentials:
+  enabled: true
+  kickCommand: "essentials:kick {player} {reason}"
+  banCommand: "essentials:ban {player} {reason}"
+  tempBanCommand: "essentials:tempban {player} {durationSeconds}s {reason}"
+  muteCommand: "essentials:mute {player} {durationSeconds}s {reason}"
+
+# Automatic broadcast settings (file path + defaults).
+announcements:
+  enabled: true
+  defaultIntervalSeconds: 300
+
+# Commands for /asg helper actions.
+management:
+  # Command executed when admins run /asg unmute.
+  unmuteCommand: "essentials:unmute {player}"
+  # Command executed when admins run /asg unban.
+  unbanCommand: "essentials:pardon {player}"
