@@ -2,7 +2,7 @@ name: AntiSlurGuard
 main: com.example.antislurguard.AntiSlurGuardPlugin
 version: 1.1.1
 api-version: "1.21"
-author: "Biggiko"
+author: "YourName"
 softdepend: [Essentials, EssentialsChat]
 commands:
   asg:
